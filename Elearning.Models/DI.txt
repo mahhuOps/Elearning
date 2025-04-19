@@ -1,0 +1,8 @@
+builder.Services.AddTransient<IChapterBL, ChapterBL>();
+builder.Services.AddTransient<ICourseBL, CourseBL>();
+builder.Services.AddTransient<ICoursePackageBL, CoursePackageBL>();
+builder.Services.AddTransient<ICoursePackageDetailBL, CoursePackageDetailBL>();
+builder.Services.AddTransient<ICourseSessionBL, CourseSessionBL>();
+builder.Services.AddTransient<ILessonBL, LessonBL>();
+builder.Services.AddTransient<IServiceBL, ServiceBL>();
+builder.Services.AddTransient<IUserBL, UserBL>();

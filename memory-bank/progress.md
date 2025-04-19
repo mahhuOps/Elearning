@@ -1,0 +1,3 @@
+# Progress
+
+The project is currently in the initial phase of development. The API is being built and the different services are being configured. The Google Sign-In functionality has been implemented using the Firebase SDK. The `FirebaseAuthService.cs` and `UsersController.cs` files have been updated with implementations for the Google Sign-In flow. The `FirebaseAuthService.cs` file now returns the Google Sign-In URL, and the `UsersController.cs` file now has a `LoginGoogle` endpoint that returns the Google Sign-In URL and a `SignInWithGoogleIdToken` endpoint that signs in the user with the Google ID token. The user's information is stored in Firebase Authentication and saved to the MySQL database. The next step is to test the Google Sign-In functionality.
