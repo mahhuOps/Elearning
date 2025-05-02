@@ -1,6 +1,6 @@
 using Core.Interfaces;
 using Elearning.Models;
-namespace Elearning.Interfaces
+namespace Elearning.BL.Interfaces
 {
     public interface ICoursePackageDetailBL: IBaseBL<CoursePackageDetail>
     {

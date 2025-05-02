@@ -7,3 +7,6 @@ The project uses the following technologies:
 *   Firebase: A platform for building mobile and web applications.
 *   EmailService: A service for sending emails.
 *   DatabaseService: A service for interacting with the database.
+*   Dapper: A micro-ORM used by the `DatabaseService` to interact with the MySQL database.
+*   MySQL: A relational database used to store the data.
+*   JWT: JSON Web Tokens are used for authentication and authorization.

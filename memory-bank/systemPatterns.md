@@ -5,7 +5,11 @@ The system follows a layered architecture with the following layers:
 *   **API Layer:** Exposes the API endpoints for managing the Elearning platform.
 *   **Business Logic Layer:** Contains the business logic for the Elearning platform.
 *   **Data Access Layer:** Provides access to the database.
-*   **Service Layer:** Provides access to external services such as Firebase and EmailService.
+*   **Service Layer:** Provides access to external services such as Firebase and EmailService. The Firebase service provides Google Sign-In functionality.
+
+The project uses a base business logic class `BaseBL<T>` that provides common functionality for all business logic classes. The `BaseBL<T>` class uses custom attributes like `ConfigTable`, `PrimaryKey`, and `Detail` to configure the database operations. It also uses the `IDatabaseService` interface to interact with the database.
+
+The project uses a base controller class `BaseController<T>` that provides common functionality for all controllers. The `BaseController<T>` class uses the `IBaseBL<T>` interface to interact with the business logic layer. It also uses attributes like `[Route]`, `[ApiController]`, `[HttpGet]`, `[HttpPost]`, `[HttpDelete]`, and `[HttpPut]` to configure the API endpoints. The `[Authorize]` attribute is used to secure the API endpoints.
 
 The system uses the following design patterns:
 

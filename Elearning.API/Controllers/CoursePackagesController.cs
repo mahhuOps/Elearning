@@ -1,4 +1,4 @@
-using Elearning.Interfaces;
+using Elearning.BL.Interfaces;
 using Elearning.Models;
 using Core.Controllers;
 

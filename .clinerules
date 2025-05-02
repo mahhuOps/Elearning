@@ -1,3 +1,8 @@
 # .clinerules
 
 This file will contain project intelligence.
+
+*   The Google Sign-In functionality is implemented in the `FirebaseAuthService.cs` file.
+*   The `LoginGoogle` method returns the Google Sign-In URL.
+*   The `SignInWithGoogleIdToken` method is not fully implemented and needs to be implemented.
+*   A corresponding endpoint needs to be created in `UsersController.cs` to handle the Google Sign-In flow.

@@ -770,13 +770,13 @@ namespace Core.Implements
                     break;
                 case ModelStateEnum.Insert:
                     entity.SetValue("CreatedDate", DateTime.Now);
-                    entity.SetValue("CreatedBy", BaseInfo.UserName);
+                    entity.SetValue("CreatedBy", BaseInfo.FullName);
                     entity.SetValue("ModifiedDate", DateTime.Now);
-                    entity.SetValue("ModifiedBy", BaseInfo.UserName);
+                    entity.SetValue("ModifiedBy", BaseInfo.FullName);
                     break;
                 case ModelStateEnum.Update:
                     entity.SetValue("ModifiedDate", DateTime.Now);
-                    entity.SetValue("ModifiedBy", BaseInfo.UserName);
+                    entity.SetValue("ModifiedBy", BaseInfo.FullName);
                     break;
                 case ModelStateEnum.Delete:
                     break;

@@ -364,13 +364,13 @@ namespace DatabaseService.Implements
             throw new Exception("Truyền cả connection và transaction nếu muốn sử dụng custom luồng tương tác với database !");
         }
 
-        public async Task<Entity> QuerySingleUsingStoredProcedureAsync<Entity>(string commandText, Dictionary<string, object> param = null, IDbTransaction transaction = null, IDbConnection connection = null)
+        public async Task<Entity> QuerySingleUsingStoredProcedureAsync<Entity>(string procedureName, Dictionary<string, object> param = null, IDbTransaction transaction = null, IDbConnection connection = null)
         {
             if (connection == null && transaction == null)
             {
                 connection = GetDbConnection();
                 connection.Open();
-                var command = new CommandDefinition(commandText, param, commandType: CommandType.StoredProcedure);
+                var command = new CommandDefinition(procedureName, param, commandType: CommandType.StoredProcedure);
 
                 var result = await connection.QueryFirstOrDefaultAsync<Entity>(command);
 
@@ -380,7 +380,7 @@ namespace DatabaseService.Implements
             }
             else if (connection != null && transaction != null)
             {
-                var command = new CommandDefinition(commandText, param, commandType: CommandType.StoredProcedure, transaction: transaction);
+                var command = new CommandDefinition(procedureName, param, commandType: CommandType.StoredProcedure, transaction: transaction);
 
                 var result = await connection.QueryFirstOrDefaultAsync<Entity>(command);
 

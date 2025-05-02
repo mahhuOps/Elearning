@@ -18,6 +18,8 @@ namespace Elearning.Models
         [Required]
         public decimal Price { get; set; }
 
+        public int? SortOrder { get; set; }
+
         [NotMap]
         [Detail("SELECT * FROM service s WHERE s.CoursePackageID = @MasterID;", "Services", typeof(List<Service>))]
         public List<Service> Services { get; set; }

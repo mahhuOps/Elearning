@@ -66,6 +66,7 @@ artifacts/
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
+Elearning.API/FirebaseConfig/firebase-config.json
 # StyleCop
 StyleCopReport.xml
 

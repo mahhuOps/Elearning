@@ -11,11 +11,8 @@
     <ProjectReference Include="..\DatabaseService\DatabaseService.csproj" />
     <ProjectReference Include="..\Elearning.Common\Elearning.Common.csproj" />
     <ProjectReference Include="..\Elearning.Models\Elearning.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Implements\" />
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
+    <ProjectReference Include="..\FirebaseService\FirebaseService.csproj" />
   </ItemGroup>
 
 </Project>
