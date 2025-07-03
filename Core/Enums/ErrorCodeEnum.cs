@@ -48,5 +48,11 @@ namespace Core.Enums
         ProductInBundle,
         SubscribePending,
         SubscribeVerified,
+        PayloadError,
+        PromotionError,
+        NotFound,
+        ValueInvalid,
+        Expired,
+        InvalidUpgrade
     }
 }

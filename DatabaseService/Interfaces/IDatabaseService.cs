@@ -42,7 +42,7 @@ namespace DatabaseService.Interfaces
 
         public Entity QuerySingleUsingStoredProcedure<Entity>(string commandText, Dictionary<string, object> param = null, IDbTransaction transaction = null, IDbConnection connection = null);
 
-        public Task<Entity> QuerySingleUsingStoredProcedureAsync<Entity>(string commandText, Dictionary<string, object> param = null, IDbTransaction transaction = null, IDbConnection connection = null);
+        public Task<Entity> QuerySingleUsingStoredProcedureAsync<Entity>(string procedureName, Dictionary<string, object> param = null, IDbTransaction transaction = null, IDbConnection connection = null);
         #endregion
 
         #region Execute scalar

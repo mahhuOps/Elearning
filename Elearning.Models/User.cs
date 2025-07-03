@@ -25,5 +25,7 @@ namespace Elearning.Models
 
         [Length(20), Phone]
         public string PhoneNumber { get; set; }
-     }
+
+        public string Password { get; set; }
+    }
 }

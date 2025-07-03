@@ -29,5 +29,7 @@ namespace Core.Interfaces
         Task<List<T>> Search(string keyword);
 
         Task<ServiceResponse> UpdateField(ModelUpdateField model,int id);
+
+        Task<bool> CheckPermission(int id);
     }
 }

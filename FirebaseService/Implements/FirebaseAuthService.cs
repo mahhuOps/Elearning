@@ -1,4 +1,4 @@
-﻿using Firebase.Auth;
+﻿﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
 using FirebaseService.Interfaces;
@@ -64,7 +64,8 @@ namespace FirebaseService.Implements
 
         public async Task<UserCredential> SignInWithEmailAndPasswordAsync(string email, string password)
         {
-            return await _firebaseProvider.SignInWithEmailAndPasswordAsync(email, password);
+            var userCredential = await _firebaseProvider.SignInWithEmailAndPasswordAsync(email, password);
+            return userCredential;
         }
 
         public async Task<UserCredential> SignInWithRedirectAsync(FirebaseProviderType authType, SignInRedirectDelegate redirectDelegate)
@@ -80,32 +81,6 @@ namespace FirebaseService.Implements
             // For now, just return the Google Sign-In URL
             return $"https://accounts.google.com/o/oauth2/v2/auth?client_id={_firebaseConfig["API_KEY"]}&redirect_uri={url}&response_type=token&scope=openid%20email%20profile";
         }
-
-        //public async Task<User> SignInWithGoogleIdToken(string idToken)
-        //{
-        //    var userCredential = await _firebaseProvider.SignInWithGoogleIdTokenAsync(idToken);
-        //    var firebaseUser = userCredential.User;
-
-        //    // Check if user exists in database
-        //    var user = await _databaseService.GetByField<User>("FirebaseID", firebaseUser.Uid);
-
-        //    if (user == null)
-        //    {
-        //        // Create new user
-        //        user = new User
-        //        {
-        //            FirebaseID = firebaseUser.Uid,
-        //            Email = firebaseUser.Email,
-        //            FullName = firebaseUser.DisplayName,
-        //            Avatar = firebaseUser.PhotoUrl,
-        //            IsAdmin = false
-        //        };
-
-        //        await _databaseService.Insert(user);
-        //    }
-
-        //    return user;
-        //}
 
         public void SignOut()
         {

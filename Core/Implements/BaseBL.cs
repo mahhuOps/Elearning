@@ -770,13 +770,13 @@ namespace Core.Implements
                     break;
                 case ModelStateEnum.Insert:
                     entity.SetValue("CreatedDate", DateTime.Now);
-                    entity.SetValue("CreatedBy", BaseInfo.UserName);
+                    entity.SetValue("CreatedBy", BaseInfo.FullName);
                     entity.SetValue("ModifiedDate", DateTime.Now);
-                    entity.SetValue("ModifiedBy", BaseInfo.UserName);
+                    entity.SetValue("ModifiedBy", BaseInfo.FullName);
                     break;
                 case ModelStateEnum.Update:
                     entity.SetValue("ModifiedDate", DateTime.Now);
-                    entity.SetValue("ModifiedBy", BaseInfo.UserName);
+                    entity.SetValue("ModifiedBy", BaseInfo.FullName);
                     break;
                 case ModelStateEnum.Delete:
                     break;
@@ -904,6 +904,16 @@ namespace Core.Implements
             else throw new Exception("Thông tin không tồn tại!");
 
             return result;
+        }
+
+        public async Task<bool> CheckPermission(int id)
+        {
+            var sql = $"SELECT COUNT(1) > 0 FROM course_package_detail INNER JOIN course_package USING(CoursePackageID) INNER JOIN chapter ON chapter.CourseID = course_package.CourseID INNER JOIN lesson USING(ChapterID) WHERE course_package_detail.ReceiverEmail = @ReceiveEmail AND {_tableName}.{_fieldPrimaryKey} = @ID;";
+
+            return await _dataBaseService.ExecuteScalarUsingCommandTextAsync<bool>(sql, new Dictionary<string, object> {
+                {"@ReceiveEmail", BaseInfo.email },
+                {"@ID", id }
+            });
         }
     }
 }
