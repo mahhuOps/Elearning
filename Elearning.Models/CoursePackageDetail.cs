@@ -35,5 +35,7 @@ namespace Elearning.Models
         public decimal? NextPrice { get; set; }
         public decimal? NextPurchasePrice { get; set; }
         public Guid? ReferrerID { get; set; }
+
+        public string Password { get; set; }
     }
 }

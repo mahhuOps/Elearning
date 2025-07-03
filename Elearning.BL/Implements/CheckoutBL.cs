@@ -7,6 +7,7 @@ using DatabaseService.Interfaces;
 using Elearning.BL.Interfaces;
 using Elearning.Models;
 using EmailService.Interfaces;
+using EmailService.Models;
 using FirebaseService.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -15,9 +16,6 @@ namespace Elearning.BL.Implements
 {
     public class CheckoutBL : ICheckoutBL
     {
-        IPromotionBL _promotion;
-        ICoursePackageBL _coursePackage;
-        ICoursePackageDetailBL _coursePackageDetail;
         IUserBL _userBL;
         IDatabaseService _databaseService;
         IFirebaseAuthService _firebaseService;
@@ -26,16 +24,13 @@ namespace Elearning.BL.Implements
         IConfigurationSection _appsetting;
         IEmailService _emailService;
 
-        public CheckoutBL(IConfiguration configuration,IPromotionBL promotion, IEmailService emailService, ICoursePackageBL coursePackage, ICoursePackageDetailBL coursePackageDetailBL, IUserBL userBL, IDatabaseService databaseService, IFirebaseAuthService firebaseAuthService, IHttpContextAccessor httpContextAccessor, ICoursePackageDetailBL coursePackageDetail)
+        public CheckoutBL(IConfiguration configuration,IEmailService emailService, IUserBL userBL, IDatabaseService databaseService, IFirebaseAuthService firebaseAuthService, IHttpContextAccessor httpContextAccessor, ICoursePackageDetailBL coursePackageDetail)
         {
-            _promotion = promotion;
-            _coursePackage = coursePackage;
             _userBL = userBL;
             _databaseService = databaseService;
             _firebaseService = firebaseAuthService;
             _httpContextAccessor = httpContextAccessor;
             _appsetting = configuration.GetSection("AppSettings");
-            _coursePackageDetail = coursePackageDetail;
             _emailService = emailService;
         }
 
@@ -91,6 +86,7 @@ namespace Elearning.BL.Implements
                 {"v_UserID", userID ?? 0},
                 {"v_NextPrice", checkoutInfo.GetValue<decimal>("Price")},
                 {"v_ReferrerID", referrerID ?? ""},
+                {"v_Password", password }
             };
 
             var ordercoder = await _databaseService.ExecuteScalarUsingStoreProcedureAsync<string>("Proc_CoursePackageDetail_Checkout", param);
@@ -255,16 +251,37 @@ namespace Elearning.BL.Implements
                 // Lưu thông tin cho người giới thiệu
                 _ = SaveReferrerInfo(content, coursePackageDetail);
 
-                if (coursePackageDetail == null || coursePackageDetail.UserID == null) return result;
+                if (coursePackageDetail == null) return result;
 
-                var user = await _userBL.GetByID((int)coursePackageDetail.UserID);
-
-                // Lấy thông tin user
                 // Gửi mail cho người dùng
-                // Gửi thành công reset password tài khoản
+                SendMailCheckoutSuccess(coursePackageDetail);
             }
 
             return result;
+        }
+
+        private void SendMailCheckoutSuccess(CoursePackageDetail coursePackageDetail)
+        {
+            var emailContent = "<div style=\"display: flex;flex-direction: column;align-items: center;\">\r\n    <div style=\"display: flex;flex-direction: column;align-items: center;width: 480px;\">\r\n        <div style=\"font-size: 20px;font-weight: 700;\">CHÀO MỪNG ĐẾN VỚI FUTURCREATORS</div>\r\n        <br>\r\n        <br>\r\n        <div>##UserName##, Đây Là Quyền Truy Cập của Ông/Bà Vào Chương Trình:</div>\r\n        <br>\r\n        <br>\r\n        <div>\r\n            <div>Email: ##UserEmail##</div>\r\n            <div>Mật khẩu: ##UserPassword##</div>\r\n        </div>\r\n        <br>\r\n        <br>\r\n        <div style=\"display: flex;flex-direction: column;align-items: center;text-align: center;\">\r\n            <div style=\"width: 240px;height: 40px;background: #2a7dff;border-radius: 4px;display: flex;align-items: center;justify-content: center;color: white;font-weight: 600;\">\r\n                <a style=\"text-decoration: none;color: white;\" href=\"##LinkWebsite##\">ĐĂNG NHẬP NGAY</a></div>\r\n            <br>\r\n            <div>\"Nếu ông/bà đã có tài khoản với địa chỉ email tương tự, hãy nhập mật khẩu cá nhân của ông/bà hoặc thử đặt lại mật khẩu.\"</div>\r\n        </div>\r\n        <br>\r\n        <br>\r\n        <hr style=\"width: 100%;\">\r\n        <div style=\"width: 100%;padding-left: 48px;padding-top: 12px;\">\r\n            <div>Kenvin Mach</div>\r\n            <div>Founder</div>\r\n            <div>support@futurcreators.com</div>\r\n            <div>https://www.instagram.com/futurcreators</div>\r\n            <div>https://www.facebook.com/futurcreators</div>\r\n        </div>\r\n    </div>\r\n</div>";
+
+            emailContent = emailContent.Replace("##UserName##", coursePackageDetail.ReceiverEmail)
+                                        .Replace("##UserEmail##", coursePackageDetail.ReceiverEmail)
+                                        .Replace("##UserPassword##", coursePackageDetail.Password)
+                                        .Replace("##LinkWebsite##", _appsetting["LinkWebsite"]);
+
+            _ = _emailService.SendMail(new EmailService.Models.MailConfig()
+            {
+                DisplayName = _appsetting["DisplayName"] ?? "Elearning",
+                Email = _appsetting["Email"] ?? "Elearning",
+                Host = _appsetting["Host"] ?? "Elearning",
+                Password = _appsetting["Password"] ?? "Elearning",
+                Port = int.Parse(_appsetting["DisplayName"] ?? "465")
+            }, new EmailService.Models.MailModel()
+            {
+                Body = emailContent,
+                Subject = "Thông báo mua khóa học thành công",
+                To = new List<string> { { coursePackageDetail.ReceiverEmail } }
+            });
         }
 
         private async Task SaveReferrerInfo(string content, CoursePackageDetail coursePackageDetail)

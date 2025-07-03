@@ -9,7 +9,7 @@ namespace Elearning.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CheckoutController
+    public class CheckoutController: ControllerBase
     {
         ICheckoutBL _checkoutBL;
 
